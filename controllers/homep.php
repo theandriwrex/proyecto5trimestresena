@@ -1,0 +1,42 @@
+<?php
+require_once __DIR__ . '/../models/homep.php';
+
+class Homep {
+    public function index() {
+        session_start();
+        global $conn;
+
+        $modelo = new HomepModel($conn);
+
+        if (isset($_SESSION['id_usuario'])) {
+            $reserva = $modelo->obtenerUltimaReserva($_SESSION['id_usuario']);
+
+            if ($reserva) {
+                // Asignar datos a sesión en el controlador y no en el modelo
+                $_SESSION["id_reserva"] = $reserva["id_reserva"];
+                $_SESSION["nombre_completo"] = $reserva["nombre_completo"];
+                $_SESSION["mensaje"] = $reserva["mensaje"];
+                $_SESSION["telefono"] = $reserva["telefono"];
+                $_SESSION["n_huespedes"] = $reserva["n_huespedes"];
+                $_SESSION["genero"] = $reserva["genero"];
+                $_SESSION["fecha_ingreso"] = $reserva["fecha_ingreso"];
+                $_SESSION["fecha_salida"] = $reserva["fecha_salida"];
+                $_SESSION["servicios"] = $reserva["servicios"];
+                $_SESSION["metodo_pago"] = $reserva["metodo_pago"];
+            } else {
+                $_SESSION["sin_reserva"] = true;
+            }
+        }
+
+        require 'views/home.php';
+    }
+
+        // Cierra sesión
+    public function logout() {
+        session_start();
+        session_destroy();
+        header("Location: index.php?controller=loginp&action=index");
+        exit;
+    }
+}
+?>
