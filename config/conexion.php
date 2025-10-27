@@ -10,7 +10,7 @@ function getConnection(){
     $conn = new PDO("mysql:host=$host;dbname=$db", "$user", "$pass");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $conn;
-  } catch (PDOExeption $e) {
+  } catch (PDOException $e) {
     die("Error de conexión: " . $e->getMessage());
   }
  }

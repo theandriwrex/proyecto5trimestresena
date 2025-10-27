@@ -5,6 +5,6 @@ $_SESSION = [];
 
 session_unset();
 session_destroy();
-header("Location:../views/login.php");
+header("index.php?controller=loginp&action=index");
 exit();
 ?>

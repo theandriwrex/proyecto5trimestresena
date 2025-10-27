@@ -1,6 +1,8 @@
 <?php
-  session_start();
-  require_once __DIR__ . "/../config/conexion.php";
+  // Asegurar que la sesión esté iniciada
+  if (session_status() === PHP_SESSION_NONE) {
+      session_start();
+  }
 
   if (!isset($_SESSION["usuario"])) {
     header("Location: ../views/login.php");
@@ -25,7 +27,38 @@
       <h2 class="text-center text-uppercase fw-bold text-light mb-3">Reserva tu estadía</h2>
       <p class="text-center text-info mb-4">Bienvenido <span class="fw-bold"><?php echo $_SESSION["nombre"] ?></span></p>
 
-      <form action="../controllers/procesar_reserva.php" method="POST" class="row g-3">
+      <form action="index.php?controller=procesar_reserva&action=guardar" method="POST" class="row g-3">
+      <?php
+      if (!empty($_SESSION['errores'])) {
+        echo '<div class="alert alert-danger w-100">';
+        foreach ($_SESSION['errores'] as $err) {
+          echo '<div>' . htmlspecialchars($err) . '</div>';
+        }
+        echo '</div>';
+        unset($_SESSION['errores']);
+      }
+
+      if (!empty($_SESSION['error_general'])) {
+        echo '<div class="alert alert-danger w-100">' . htmlspecialchars($_SESSION['error_general']) . '</div>';
+        unset($_SESSION['error_general']);
+      }
+
+      if (!empty($_SESSION['reserva_exitosa'])) {
+        echo '<div class="alert alert-success w-100">' . htmlspecialchars($_SESSION['reserva_exitosa']) . '</div>';
+        unset($_SESSION['reserva_exitosa']);
+      }
+
+      // Mostrar información de depuración (temporal)
+      if (!empty($_SESSION['debug_reserva'])) {
+        echo '<div class="alert alert-warning w-100"><strong>Debug DB:</strong> ' . htmlspecialchars(json_encode($_SESSION['debug_reserva'])) . '</div>';
+        unset($_SESSION['debug_reserva']);
+      }
+
+      if (!empty($_SESSION['debug_inputs_reserva'])) {
+        echo '<div class="alert alert-info w-100"><strong>Inputs:</strong> ' . htmlspecialchars(json_encode($_SESSION['debug_inputs_reserva'])) . '</div>';
+        unset($_SESSION['debug_inputs_reserva']);
+      }
+      ?>
         
         <div class="col-md-6">
           <label for="nombre" class="form-label">Nombre Completo</label>

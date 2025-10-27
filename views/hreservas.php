@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../models/ver_reservas.php";
+require_once __DIR__ . "/../Controllers/His_reservas.php";
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -57,16 +57,20 @@ require_once __DIR__ . "/../models/ver_reservas.php";
             </tr>
           </thead>
           <tbody class="text-gray-700">
-            <?php if (!empty($_SESSION["sin_reserva"])): ?>
-                <tr>
-                    <td colspan="10" class="py-6 px-4 text-center text-gray-500">
-                        No tienes reservas en estos momentos.
-                    </td>
-                </tr>
-            <?php else: ?>
-                <?php foreach ($_SESSION["reservas"] as $reserva): ?>
-                    <tr class="hover:bg-gray-50">
-                        <td class="py-3 px-4 text-center"><?php echo $reserva["id_reserva"]; ?></td>
+      <?php 
+        // Mostrar "no reservas" únicamente si no hay elementos en el array de reservas.
+        $reservas_arr = $_SESSION['reservas'] ?? [];
+        if (empty($reservas_arr)): ?>
+        <tr>
+          <td colspan="11" class="py-6 px-4 text-center text-gray-500">
+            No tienes reservas en estos momentos.
+          </td>
+        </tr>
+      <?php else: ?>
+        <?php foreach ($_SESSION["reservas"] as $reserva): ?>
+
+          <tr class="hover:bg-gray-50">
+            <td class="py-3 px-4 text-center"><?php echo $reserva["id_reserva"]; ?></td>
                         <td class="py-3 px-4"><?php echo $reserva["nombre_completo"]; ?></td>
                         <td class="py-3 px-4"><?php echo $reserva["telefono"]; ?></td>
                         <td class="py-3 px-4 text-center"><?php echo $reserva["n_huespedes"]; ?></td>

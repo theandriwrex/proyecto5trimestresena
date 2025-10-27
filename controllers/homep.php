@@ -12,7 +12,14 @@ class Homep {
         $modelo = new HomepModel($conn);
 
         if (isset($_SESSION['usuario'])) {
-            $reserva = $modelo->obtenerUltimaReserva($_SESSION['usuario']);
+            // Usar el id numérico de usuario en sesión para obtener la reserva correctamente
+            $userId = $_SESSION['id_usuario'] ?? null;
+            if ($userId) {
+                $reserva = $modelo->obtenerUltimaReserva($userId);
+            } else {
+                // Si por alguna razón no tenemos id en sesión, no marcar como sin_reserva aquí
+                $reserva = null;
+            }
 
             if ($reserva) {
                 // Asignar datos a sesión en el controlador y no en el modelo

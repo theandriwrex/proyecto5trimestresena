@@ -3,12 +3,11 @@ require_once 'config/conexion.php';
 require_once 'models/login.php';
 
 class Loginp {
-    // Muestra el formulario de login
+
     public function index() {
         require 'views/login.php';
     }
 
-    // Procesa el inicio de sesión
     public function autenticar() {
      session_start();
      $errores = [];
@@ -26,15 +25,14 @@ class Loginp {
             if ($data && password_verify($clave, $data['clave'])) {
                 $_SESSION['usuario'] = $data['usuario'];
                 $_SESSION['nombre'] = $data['nombre'];
+                $_SESSION['id_usuario'] = $data['id_usuario'];
                 header("Location: index.php?controller=homep&action=index");
                 exit;
-                
             } else {
                 $errores[] = "Usuario o clave incorrectos.";
             }
         }
 
-        // Si algo falla, vuelve a mostrar el login con errores
         require 'views/login.php';
     }
 
