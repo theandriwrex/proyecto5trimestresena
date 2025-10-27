@@ -8,14 +8,6 @@ $stmt = $conn->prepare($sql);
 $stmt->bindParam(":id_usuario", $usuario_id);
 $stmt->execute();
 
-$reservas = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-if (!$reservas) {
-    $_SESSION["sin_reserva"] = true;
-} else {
-    $_SESSION["reservas"] = $reservas; 
-}
-
-
+return $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 
 class Registrop {
-    // Despliega el formulario de registro (vista)
+    
     public function index() {
         require 'views/registro.php';
     }
@@ -9,7 +9,7 @@ class Registrop {
 
     public function guardar() {
         $errores = [];
-
+        
         if (empty($_POST['usuario']) || empty($_POST['clave']) || empty($_POST['nombre']) || empty($_POST['email'])) {
             $errores[] = "Todos los campos son obligatorios.";
         } else {

@@ -6,10 +6,6 @@
     header("Location: ../views/login.php");
     exit;
   }
-
-   
-
-
 ?>
 
 <!DOCTYPE html>

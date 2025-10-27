@@ -1,15 +1,18 @@
 <?php
 require_once __DIR__ . '/../models/homep.php';
+require_once 'config/conexion.php';
 
 class Homep {
     public function index() {
+        if (session_status() === PHP_SESSION_NONE) {
         session_start();
-        global $conn;
-
+        }
+        
+        $conn = getConnection();
         $modelo = new HomepModel($conn);
 
-        if (isset($_SESSION['id_usuario'])) {
-            $reserva = $modelo->obtenerUltimaReserva($_SESSION['id_usuario']);
+        if (isset($_SESSION['usuario'])) {
+            $reserva = $modelo->obtenerUltimaReserva($_SESSION['usuario']);
 
             if ($reserva) {
                 // Asignar datos a sesión en el controlador y no en el modelo
@@ -23,15 +26,22 @@ class Homep {
                 $_SESSION["fecha_salida"] = $reserva["fecha_salida"];
                 $_SESSION["servicios"] = $reserva["servicios"];
                 $_SESSION["metodo_pago"] = $reserva["metodo_pago"];
+                unset($_SESSION["sin_reserva"]);
+
+                
             } else {
                 $_SESSION["sin_reserva"] = true;
             }
-        }
 
-        require 'views/home.php';
+            require 'views/home.php';
+        }
+        
     }
 
-        // Cierra sesión
+    
+    
+    
+    // Cierra sesión
     public function logout() {
         session_start();
         session_destroy();

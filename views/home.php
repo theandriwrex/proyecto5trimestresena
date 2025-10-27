@@ -1,5 +1,6 @@
 <?php
-require_once __DIR__ . "/../models/homep.php";
+require_once __DIR__ . "/../controllers/homep.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -13,7 +14,7 @@ require_once __DIR__ . "/../models/homep.php";
 <body class="bg-gray-100 text-gray-800">
   <header class="bg-white shadow-md fixed w-full z-10">
     <nav class="container mx-auto flex justify-between items-center p-4">
-      <h1 id ="h1_nav" class="text-2xl font-bold text-indigo-600"> Bienvenido <?php echo $_SESSION ["usuario"]?> </h1>
+      <h1 id ="h1_nav" class="text-2xl font-bold text-indigo-600"> Bienvenido <?php echo $_SESSION ["nombre"]?> </h1>
       <ul class="flex space-x-6" id="navbar">
         <li><a href="#image_session" class="hover:text-indigo-500">Inicio</a></li>
         <li><a href="hreservas.php" class="hover:text-indigo-500">Mis_Reservas</a></li>
@@ -32,7 +33,7 @@ require_once __DIR__ . "/../models/homep.php";
       <a href="index1.php" class="bg-indigo-600 px-6 py-3 rounded-lg text-lg hover:bg-indigo-500">Reserva Ahora</a>
     </div>
   </section>
-
+ 
   <section id="reserva" class="py-16 bg-gray-30">
     <div class="container mx-auto text-center">
       <h3 class="text-3xl font-bold mb-10">Mis Reservas</h3>

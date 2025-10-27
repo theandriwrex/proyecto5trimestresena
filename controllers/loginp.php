@@ -1,5 +1,6 @@
 <?php
 require_once 'config/conexion.php';
+require_once 'models/login.php';
 
 class Loginp {
     // Muestra el formulario de login
@@ -9,31 +10,27 @@ class Loginp {
 
     // Procesa el inicio de sesión
     public function autenticar() {
-        $errores = [];
-        session_start();
+     session_start();
+     $errores = [];
 
-        if (!isset($_POST['usuario'], $_POST['clave'])) {
+        if (empty($_POST['usuario']) || empty($_POST['clave'])) {
             $errores[] = "Debes completar usuario y clave.";
         } else {
-            $usuario = trim($_POST['usuario']);
-            $clave   = $_POST['clave'];
+            $usuario1 = trim($_POST['usuario']);
+            $clave  = $_POST['clave'];
 
-            global $conn;
-            $sql = "SELECT * FROM usuarios WHERE usuario=:usuario";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':usuario', $usuario);
-            $stmt->execute();
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $conn = getConnection();
+            $model = new LoginModel($conn);
+            $data = $model->loguearUsuario($usuario1);
 
-            if (!$user || !password_verify($clave, $user['clave'])) {
-                $errores[] = "Usuario o clave incorrectos.";
-            } else {
-                // Inicio de sesión exitoso
-                $_SESSION['usuario'] = $user['usuario'];
-                $_SESSION['nombre'] = $user['nombre'];
-                
+            if ($data && password_verify($clave, $data['clave'])) {
+                $_SESSION['usuario'] = $data['usuario'];
+                $_SESSION['nombre'] = $data['nombre'];
                 header("Location: index.php?controller=homep&action=index");
                 exit;
+                
+            } else {
+                $errores[] = "Usuario o clave incorrectos.";
             }
         }
 
