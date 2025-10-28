@@ -17,7 +17,7 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
         Bienvenido <?php echo $_SESSION["nombre"]; ?>
       </h1>
       <ul class="flex space-x-6">
-        <li><a href="home.php" class="hover:text-indigo-500">Inicio</a></li>
+        <li><a href="index.php?controller=homep&action=index" class="hover:text-indigo-500">Inicio</a></li>
         <li><a href="#reserva" class="hover:text-indigo-500">Mis Reservas</a></li>
         <li><a href="#habitaciones" class="hover:text-indigo-500">Habitaciones</a></li>
         <li><a href="#servicios" class="hover:text-indigo-500">Servicios</a></li>
@@ -80,7 +80,7 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
                         <td class="py-3 px-4"><?php echo $reserva["fecha_salida"]; ?></td>
                         <td class="py-3 px-4"><?php echo $reserva["servicios"]; ?></td>
                         <td class="py-3 px-4"><?php echo $reserva["metodo_pago"]; ?></td>
-                        <td class="py-3 px-4"><a href="">cancelar reserva</a> <br><br> <a href="">editar</a></td>
+                        <td class="py-3 px-4"><a href="">cancelar reserva</a> <br><br> <a href="">editar</a> <br><br> <a href="index.php?controller=His_reservas&action=generarReporte">PDF</a></td>
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>

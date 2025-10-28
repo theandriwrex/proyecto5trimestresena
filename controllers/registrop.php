@@ -1,5 +1,5 @@
 <?php
-
+require 'models/login.php';
 class Registrop {
     
     public function index() {
@@ -30,17 +30,15 @@ class Registrop {
         }
 
         if (count($errores) === 0) {
-            global $conn;
+            
+            $conn = getConnection();
+
             $clave = password_hash($clave_plana, PASSWORD_DEFAULT);
 
-            $sql = "INSERT INTO usuarios (usuario, clave, nombre, email) VALUES (:usuario, :clave, :nombre, :email)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(":usuario", $usuario);
-            $stmt->bindParam(":clave", $clave);
-            $stmt->bindParam(":nombre", $nombre);
-            $stmt->bindParam(":email", $email);
-
-            if ($stmt->execute()) {
+            $model = new LoginModel($conn);
+            $data = $model->registrarUsuario($usuario, $email, $clave);
+            
+            if ($data) {
                 $mensaje = "Usuario registrado correctamente.";
                 header("Location: /prime/index.php?controller=loginp&action=index");
                 exit;

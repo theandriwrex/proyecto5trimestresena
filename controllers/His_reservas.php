@@ -15,16 +15,20 @@ class His_reservas{
             exit();
         }
 
-    $id_usuario = $_SESSION['id_usuario'];
+        $id_usuario = $_SESSION['id_usuario'];
+        // Obtener las reservas y guardarlas en sesión para la vista
+        $reservas = $modelo->obtenerReservasPorUsuario($id_usuario);
+        $_SESSION['reservas'] = $reservas;
 
-    // Obtener las reservas y guardarlas en sesión para la vista
-    $reservas = $modelo->obtenerReservasPorUsuario($id_usuario);
-    $_SESSION['reservas'] = $reservas;
-
-    // Cargar la vista correcta
-    require_once "views/hreservas.php";
+        // Cargar la vista correcta
+        require_once "views/hreservas.php";
     }
 
+    public function generarReporte() {
+        
+        require 'views/reports/reporte_reservas.php';
+        exit();
+    }
 }
 
 

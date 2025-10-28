@@ -38,7 +38,7 @@
 
                 <div class="links-modern">
                     <ul>
-                        <li><a href="registro.php">registrarme</a></li>
+                        <li><a href="index.php?controller=registrop&action=index">registrarme</a></li>
                         <li><a href="recuperar.php">Cambiar contraseña</a></li>
                     </ul>
 
