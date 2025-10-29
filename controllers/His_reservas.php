@@ -25,10 +25,42 @@ class His_reservas{
     }
 
     public function generarReporte() {
-        
-        require 'views/reports/reporte_reservas.php';
+        session_start();        
+
+
+        $conn = getConnection();
+        $modelo = new VerReservasModel($conn);
+        $id_usuario = $_SESSION['id_usuario'];
+        $reservas = $modelo->obtenerReservasPorUsuario($id_usuario);
+        $_SESSION['reservas'] = $reservas;
+        require_once __DIR__ . '/../views/reports/reporte_reservas.php';
+        exit();
+
+    }
+
+    public function generarReporteIndividual() {
+        session_start();
+
+        if (!isset($_GET['id'])) {
+            die("ID de reserva no especificado.");
+        }
+
+        $id_reserva = intval($_GET['id']);
+        $conn = getConnection();
+        $modelo = new VerReservasModel($conn);
+
+        $reserva = $modelo->obtenerReservaPorId($id_reserva);
+        $_SESSION['reserva_individual'] = $reserva;
+
+        require 'views/reports/reporte_reserva_individual.php';
         exit();
     }
+
+
+    
+
+
+    
 }
 
 

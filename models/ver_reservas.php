@@ -20,6 +20,18 @@ class VerReservasModel {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function obtenerReservaPorId($id_reserva) {
+
+        $sql = "SELECT * FROM reservas WHERE id_reserva = :id_reserva LIMIT 1";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':id_reserva', $id_reserva, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+        
+    }
+
+
 }
 
 

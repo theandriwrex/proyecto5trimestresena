@@ -8,6 +8,7 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hotel Spyce - Mis Reservas</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="">
 </head>
 <body class="bg-gray-100 text-gray-800">
 
@@ -38,7 +39,22 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
   <!-- TABLA DE RESERVAS -->
   <section id="reserva" class="py-16">
     <div class="container mx-auto">
-      <h3 class="text-3xl font-bold text-center mb-10">Mis Reservas</h3>
+      <div class="flex flex-col md:flex-row justify-between items-center mb-10 px-4">
+        <h3 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Mis Reservas</h3>
+
+        <a 
+          href="index.php?controller=His_reservas&action=generarReporte" 
+          target="_blank"
+          class="inline-flex items-center bg-indigo-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-indigo-500 transition duration-200"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          Generar PDF de todas las reservas
+        </a>
+      </div>
+
+      
       <div class="overflow-x-auto shadow-lg rounded-xl">
         <table class="min-w-full bg-white border border-gray-200 rounded-xl">
           <thead>
@@ -80,7 +96,14 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
                         <td class="py-3 px-4"><?php echo $reserva["fecha_salida"]; ?></td>
                         <td class="py-3 px-4"><?php echo $reserva["servicios"]; ?></td>
                         <td class="py-3 px-4"><?php echo $reserva["metodo_pago"]; ?></td>
-                        <td class="py-3 px-4"><a href="">cancelar reserva</a> <br><br> <a href="">editar</a> <br><br> <a href="index.php?controller=His_reservas&action=generarReporte">PDF</a></td>
+                        <td class="py-3 px-4 space-y-2 text-center">
+                          <a href="#" class="text-red-600 hover:text-red-800 font-semibold">Cancelar</a><br>
+                          <a href="#" class="text-yellow-600 hover:text-yellow-800 font-semibold">Editar</a><br>
+                          <a href="index.php?controller=His_reservas&action=generarReporteIndividual&id=<?php echo $reserva['id_reserva']; ?>" 
+                            target="_blank" 
+                            class="text-indigo-600 hover:text-indigo-800 font-semibold">PDF</a>
+                        </td>
+
                     </tr>
                 <?php endforeach; ?>
             <?php endif; ?>
