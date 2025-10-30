@@ -97,8 +97,8 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
                         <td class="py-3 px-4"><?php echo $reserva["servicios"]; ?></td>
                         <td class="py-3 px-4"><?php echo $reserva["metodo_pago"]; ?></td>
                         <td class="py-3 px-4 space-y-2 text-center">
-                          <a href="#" class="text-red-600 hover:text-red-800 font-semibold">Cancelar</a><br>
-                          <a href="#" class="text-yellow-600 hover:text-yellow-800 font-semibold">Editar</a><br>
+                          <a href="index.php?controller=editar_reservas&action=cancelar&id=<?php echo $reserva['id_reserva']; ?>" class="text-red-600 hover:text-red-800 font-semibold">Cancelar</a><br>
+                          <a href="index.php?controller=editar_reservas&action=index&id=<?php echo $reserva['id_reserva']; ?>" class="text-yellow-600 hover:text-yellow-800 font-semibold">Editar</a><br>
                           <a href="index.php?controller=His_reservas&action=generarReporteIndividual&id=<?php echo $reserva['id_reserva']; ?>" 
                             target="_blank" 
                             class="text-indigo-600 hover:text-indigo-800 font-semibold">PDF</a>

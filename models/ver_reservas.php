@@ -31,6 +31,38 @@ class VerReservasModel {
         
     }
 
+    public function actualizarReservaParcial($id_reserva, $datos) {
+        $sql = "UPDATE reservas 
+                SET 
+                    n_huespedes = :n_huespedes,
+                    mensaje = :mensaje,
+                    fecha_ingreso = :fecha_ingreso,
+                    fecha_salida = :fecha_salida,
+                    servicios = :servicios
+                WHERE id_reserva = :id_reserva";
+
+        $stmt = $this->conn->prepare($sql);
+
+        $stmt->bindParam(':n_huespedes', $datos['n_huespedes'], PDO::PARAM_INT);
+        $stmt->bindParam(':mensaje', $datos['mensaje'], PDO::PARAM_STR);
+        $stmt->bindParam(':fecha_ingreso', $datos['fecha_ingreso'], PDO::PARAM_STR);
+        $stmt->bindParam(':fecha_salida', $datos['fecha_salida'], PDO::PARAM_STR);
+        $stmt->bindParam(':servicios', $datos['servicios'], PDO::PARAM_STR);
+        $stmt->bindParam(':id_reserva', $id_reserva, PDO::PARAM_INT);
+
+        return $stmt->execute();
+    }
+
+    public function cancelarReserva($id_reserva) {
+        $sql = "UPDATE reservas SET activo = 0 WHERE id_reserva = :id";
+        $stmt = $this->conn->prepare($sql); // <--- cambiar $this->conexion por $this->conn
+        $stmt->bindParam(':id', $id_reserva, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+
+
+
 
 }
 
