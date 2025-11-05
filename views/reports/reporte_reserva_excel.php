@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../Lib/Spreadsheet/vendor/autoload.php';
-// require_once __DIR__ . '/../../config/conexion.php';
+require_once __DIR__ . '/../../config/conexion.php';
 require_once __DIR__ . '/../../models/ver_reservas.php';
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -29,7 +29,7 @@ $sheet->setCellValue('C1', 'Telefono');
 $sheet->setCellValue('D1', 'Ingreso');
 $sheet->setCellValue('E1', 'Salida');
 
-// Aplicar negrita al encabezado
+// Aplicar negrita 
 $sheet->getStyle('A1:E1')->getFont()->setBold(true);
 
 // Llenar filas

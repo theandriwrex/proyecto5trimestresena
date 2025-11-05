@@ -17,13 +17,13 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
       <h1 class="text-2xl font-bold text-indigo-600">
         Bienvenido <?php echo $_SESSION["nombre"]; ?>
       </h1>
-      <ul class="flex space-x-6">
-        <li><a href="index.php?controller=homep&action=index" class="hover:text-indigo-500">Inicio</a></li>
-        <li><a href="#reserva" class="hover:text-indigo-500">Mis Reservas</a></li>
+      <ul class="flex space-x-6" id="navbar">
+        <li><a href="#image_session" class="hover:text-indigo-500">Inicio</a></li>
+        <li><a href="index.php?controller=His_reservas&action=index" class="hover:text-indigo-500">Mis_Reservas</a></li>
         <li><a href="#habitaciones" class="hover:text-indigo-500">Habitaciones</a></li>
         <li><a href="#servicios" class="hover:text-indigo-500">Servicios</a></li>
-        <li><a href="#contacto" class="hover:text-indigo-500">Contacto</a></li>
-        <li><a href="index1.php" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-500">Reservar</a></li>
+        <li><a href="index.php?controller=Homep&action=logout" class="text-red-600 hover:text-red-800">salir</a></li>
+        <li><a href="index.php?controller=procesar_reserva&action=index" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-500">Reservar</a></li>
       </ul>
     </nav>
   </header>
@@ -45,12 +45,21 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
         <a 
           href="index.php?controller=His_reservas&action=generarReporte" 
           target="_blank"
-          class="inline-flex items-center bg-indigo-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-indigo-500 transition duration-200"
-        >
+          class="inline-flex items-center bg-indigo-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-indigo-500 transition duration-200">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
           </svg>
           Generar PDF de todas las reservas
+        </a>
+        <br>
+        <a 
+          href="index.php?controller=His_reservas&action=generarReporteExcel" 
+          target="_blank"
+          class="inline-flex items-center bg-indigo-600 text-white px-5 py-2 rounded-lg shadow-md hover:bg-indigo-500 transition duration-200">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 mr-2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          Generar excel de todas las reservas
         </a>
       </div>
 
@@ -74,7 +83,6 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
           </thead>
           <tbody class="text-gray-700">
       <?php 
-        // Mostrar "no reservas" únicamente si no hay elementos en el array de reservas.
         $reservas_arr = $_SESSION['reservas'] ?? [];
         if (empty($reservas_arr)): ?>
         <tr>
@@ -101,7 +109,6 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
                             <a href="index.php?controller=editar_reservas&action=cancelar&id=<?php echo $reserva['id_reserva']; ?>" class="text-red-600 hover:text-red-800 font-semibold">Cancelar</a><br>
                             <a href="index.php?controller=editar_reservas&action=index&id=<?php echo $reserva['id_reserva']; ?>" class="text-yellow-600 hover:text-yellow-800 font-semibold">Editar</a><br>
                             <a href="index.php?controller=His_reservas&action=generarReporteIndividual&id=<?php echo $reserva['id_reserva']; ?>" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-semibold">PDF</a><br>
-                            <a href="index.php?controller=His_reservas&action=generarReporteExcel" class="btn btn-success"> 📊 Descargar Excel </a>
 
                           <?php else: ?>
                             <span class="text-gray-500 font-semibold bg-gray-200 px-3 py-1 rounded-lg inline-block">Cancelada</span>

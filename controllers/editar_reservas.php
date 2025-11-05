@@ -26,7 +26,6 @@ class editar_reservas {
         $id_reserva = intval($_GET['id']);
         $reserva = $this->model->obtenerReservaPorId($id_reserva);
 
-        // Seguridad: verificar que la reserva pertenece al usuario logueado
         if (!$reserva || $reserva['id_usuario'] != $_SESSION['id_usuario']) {
             die("Acceso denegado.");
         }
@@ -46,7 +45,7 @@ class editar_reservas {
 
             $servicios = '';
             if (isset($_POST['servicios']) && is_array($_POST['servicios'])) {
-                $servicios = implode(',', $_POST['servicios']); // ej: "transporte,comida"
+                $servicios = implode(',', $_POST['servicios']); 
             }
 
             $datos = [
