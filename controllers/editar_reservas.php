@@ -7,12 +7,10 @@ class editar_reservas {
     private $model;
 
     public function __construct() {
-        // ✅ Usa la función getConnection() que ya tienes definida
         $pdo = getConnection();
         $this->model = new VerReservasModel($pdo);
     }
 
-    // ✅ Mostrar formulario
     public function index() {
         session_start();
         if (!isset($_SESSION['id_usuario'])) {
@@ -36,7 +34,6 @@ class editar_reservas {
         require __DIR__ . '/../views/editar_reserva.php';
     }
 
-    // ✅ Procesar la actualización
    public function actualizar() {
         session_start();
         if (!isset($_SESSION['id_usuario'])) {
@@ -47,7 +44,6 @@ class editar_reservas {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_reserva = intval($_POST['id_reserva']);
 
-            // Convertir array de servicios a cadena
             $servicios = '';
             if (isset($_POST['servicios']) && is_array($_POST['servicios'])) {
                 $servicios = implode(',', $_POST['servicios']); // ej: "transporte,comida"
@@ -88,7 +84,6 @@ class editar_reservas {
         $id_reserva = intval($_GET['id']);
         $reserva = $this->model->obtenerReservaPorId($id_reserva);
 
-        // Seguridad: verificar que la reserva pertenece al usuario logueado
         if (!$reserva || $reserva['id_usuario'] != $_SESSION['id_usuario']) {
             die("Acceso denegado.");
         }

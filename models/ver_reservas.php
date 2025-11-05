@@ -55,7 +55,7 @@ class VerReservasModel {
 
     public function cancelarReserva($id_reserva) {
         $sql = "UPDATE reservas SET activo = 0 WHERE id_reserva = :id";
-        $stmt = $this->conn->prepare($sql); // <--- cambiar $this->conexion por $this->conn
+        $stmt = $this->conn->prepare($sql); 
         $stmt->bindParam(':id', $id_reserva, PDO::PARAM_INT);
         return $stmt->execute();
     }

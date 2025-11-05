@@ -57,7 +57,12 @@ class His_reservas{
     }
 
 
-    
+    public function generarReporteExcel() {
+        session_start();
+        require_once __DIR__ . '/../views/reports/reporte_reserva_excel.php';
+        exit();
+    }
+
 
 
     
