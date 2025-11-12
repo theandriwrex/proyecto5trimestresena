@@ -95,6 +95,25 @@
           <input type="date" class="form-control shadow-sm" id="fecha_salida" name="fecha_salida" required>
         </div>
 
+        <div class="mb-4">
+          <label for="tipo_habitacion">Tipo de Habitación:</label>
+          <select id="tipo_habitacion" name="tipo_habitacion" class="border p-2 rounded w-full">
+              <option value="">-- Selecciona un tipo --</option>
+              <option value="1">Estándar</option>
+              <option value="2">Doble</option>
+              <option value="3">Premium</option>
+              <option value="4">Suite</option>
+              <option value="5">Suite Lujo</option>
+          </select>
+        </div>
+
+        <div class="mb-4">
+          <label for="habitacion">Habitación disponible:</label>
+          <select id="habitacion" name="habitacion" class="border p-2 rounded w-full">
+              <option value="">-- Primero selecciona un tipo --</option>
+          </select>
+        </div>
+
         <div class="col-12">
           <label for="mensaje" class="form-label">Mensaje</label>
           <textarea class="form-control shadow-sm" id="mensaje" name="mensaje" rows="3"></textarea>
@@ -161,6 +180,42 @@
     </div>
   </div>
 
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+        $('#tipo_habitacion').on('change', function() {
+        var idTipo = $(this).val();
+        $('#habitacion').html('<option>Cargando...</option>');
+
+        if (idTipo) {
+            $.ajax({
+                url: 'index.php?controller=procesar_reserva&action=obtenerHabitacionesAjax',
+                type: 'POST',
+                data: { id_tipo: idTipo },
+                dataType: 'json',
+                success: function(data) {
+                  console.log("Respuesta AJAX:", data); 
+                    $('#habitacion').empty().append('<option value="">-- Selecciona una habitación --</option>');
+                    if (data.length > 0) {
+                        $.each(data, function(i, habitacion) {
+                            $('#habitacion').append('<option value="'+habitacion.id_habitacion+'">Habitación '+habitacion.numero_habitacion+'</option>');
+                        });
+                    } else {
+                        $('#habitacion').append('<option value="">No hay habitaciones disponibles</option>');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error AJAX:", error);
+                    alert('Error al cargar las habitaciones');
+                }
+            });
+        } else {
+            $('#habitacion').html('<option value="">-- Primero selecciona un tipo --</option>');
+        }
+    });
+
+    });
+  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

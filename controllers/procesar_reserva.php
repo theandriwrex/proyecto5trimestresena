@@ -117,9 +117,25 @@ class procesar_reserva {
             exit;
         }
     }
+
+
+    public function obtenerHabitacionesAjax() {
+        require_once __DIR__ . '/../models/reserva.php';
+        $conn = getConnection();
+        $modelo = new ReservaModel($conn);
+
+        if (isset($_POST['id_tipo'])) {
+            $id_tipo = intval($_POST['id_tipo']);
+            $habitaciones = $modelo->obtenerHabitacionesPorTipo($id_tipo);
+            header('Content-Type: application/json');
+            echo json_encode($habitaciones);
+        } else {
+            echo json_encode([]);
+        }
+        exit;
+    }
+
+
+
 }
 ?>
-
-
-
-<!-- $fecha_registro = date("Y-m-d H:i:s"); -->

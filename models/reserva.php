@@ -3,6 +3,8 @@ require_once __DIR__ . '/../config/conexion.php';
 
 class ReservaModel {
 
+    private $conn;
+
     public function __construct($conn) {
         $this->conn = $conn;
     }
@@ -21,17 +23,17 @@ class ReservaModel {
                         :servicios, :metodo_pago, NOW()
                     )";
 
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':id_usuario', $id_usuario);
-            $stmt->bindParam(':nombre', $nombre);
-            $stmt->bindParam(':telefono', $telefono);
-            $stmt->bindParam(':n_huespedes', $n_huespedes);
-            $stmt->bindParam(':genero', $genero);
-            $stmt->bindParam(':mensaje', $mensaje);
-            $stmt->bindParam(':fecha_ingreso', $fecha_ingreso);
-            $stmt->bindParam(':fecha_salida', $fecha_salida);
-            $stmt->bindParam(':servicios', $servicios);
-            $stmt->bindParam(':metodo_pago', $metodo_pago);
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bindParam(':id_usuario', $id_usuario);
+                $stmt->bindParam(':nombre', $nombre);
+                $stmt->bindParam(':telefono', $telefono);
+                $stmt->bindParam(':n_huespedes', $n_huespedes);
+                $stmt->bindParam(':genero', $genero);
+                $stmt->bindParam(':mensaje', $mensaje);
+                $stmt->bindParam(':fecha_ingreso', $fecha_ingreso);
+                $stmt->bindParam(':fecha_salida', $fecha_salida);
+                $stmt->bindParam(':servicios', $servicios);
+                $stmt->bindParam(':metodo_pago', $metodo_pago);
 
             if ($stmt->execute()) {
                 return ['success' => true];
@@ -63,6 +65,17 @@ class ReservaModel {
                 'metodo_pago' => $metodo_pago
             ]];
         }
+    }
+
+
+    public function obtenerHabitacionesPorTipo($id_tipo) {
+        $sql = "SELECT id_habitacion, numero_habitacion 
+                FROM habitaciones 
+                WHERE id_tipo = :id_tipo AND estado = 'disponible'";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(":id_tipo", $id_tipo, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }

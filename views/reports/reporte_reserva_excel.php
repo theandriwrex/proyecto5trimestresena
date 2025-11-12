@@ -29,7 +29,7 @@ $sheet->setCellValue('C1', 'Telefono');
 $sheet->setCellValue('D1', 'Ingreso');
 $sheet->setCellValue('E1', 'Salida');
 
-// Aplicar negrita 
+// Aplicar negrita  
 $sheet->getStyle('A1:E1')->getFont()->setBold(true);
 
 // Llenar filas
