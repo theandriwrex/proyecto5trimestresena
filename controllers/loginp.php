@@ -26,6 +26,7 @@ class Loginp {
                 $_SESSION['usuario'] = $data['usuario'];
                 $_SESSION['nombre'] = $data['nombre'];
                 $_SESSION['id_usuario'] = $data['id_usuario'];
+                $_SESSION['correo'] = $data['email'];
                 header("Location: index.php?controller=homep&action=index");
                 exit;
             } else {

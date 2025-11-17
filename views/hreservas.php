@@ -111,8 +111,7 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
                             <a href="index.php?controller=His_reservas&action=generarReporteIndividual&id=<?php echo $reserva['id_reserva']; ?>" target="_blank" class="text-indigo-600 hover:text-indigo-800 font-semibold">PDF</a><br>
                              <button 
                               class="bg-indigo-600 text-white px-3 py-1 rounded hover:bg-indigo-500 enviar-correo" 
-                              data-id="<?php echo $reserva['id_reserva']; ?>"
-                              data-email="<?php echo $reserva['correo'] ?? 'cliente@ejemplo.com'; ?>"> 
+                              data-id="<?php echo $reserva['id_reserva']; ?>"> 
                               Enviar Confirmación
                             </button>
                           <?php else: ?>
@@ -134,6 +133,7 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
     <div class="container mx-auto text-center">
       <p>&copy; 2025 Hotel Spyce. Todos los derechos reservados.</p>
       <p>📍 Dirección del hotel | 📞 +123 456 789 | ✉ contacto@hotel.com</p>
+      <?php echo $_SESSION['correo'] ?? 'no se encontro el email'; ?>
     </div>
   </footer>
 
@@ -144,7 +144,8 @@ require_once __DIR__ . "/../Controllers/His_reservas.php";
 
       $('.enviar-correo').click(function() {
         let idReserva = $(this).data('id');
-        let email = $(this).data('email');
+        let email = "<?php echo $_SESSION['correo']; ?>";
+
 
         $.ajax({
           url: 'index.php?controller=His_reservas&action=enviarCorreoAjax',

@@ -64,66 +64,54 @@ class His_reservas{
         exit();
     }
 
+
     public function enviarCorreoAjax() {
-        header('Content-Type: application/json');
 
-        // verificar datos
-        if (!isset($_POST['id_reserva']) || empty($_POST['id_reserva'])) {
-            echo json_encode(['success' => false, 'message' => 'ID de reserva no especificado']);
-            exit;
+        session_start();
+
+        if (!isset($_SESSION['correo'])) {
+            echo json_encode(['success' => false, 'error' => 'Correo no disponible en sesión']);
+            return;
         }
 
-        $id = intval($_POST['id_reserva']);
-        $email = trim($_POST['email'] ?? '');
+        $id_reserva = $_POST['id_reserva'] ?? null;
 
-        // carga autoload si aún no está cargado (solo si no lo incluyes globalmente)
-        if (!file_exists(__DIR__ . '/../vendor/autoload.php')) {
-            echo json_encode(['success' => false, 'message' => 'autoload de Composer no encontrado']);
-            exit;
+        if (!$id_reserva) {
+            echo json_encode(['success' => false, 'error' => 'ID no recibido']);
+            return;
         }
-        require_once __DIR__ . '/../vendor/autoload.php';
 
-        // obtener datos de la reserva (ejemplo)
-        $conn = getConnection();
-        require_once __DIR__ . '/../models/ver_reservas.php';
-        $modelo = new VerReservasModel($conn);
-        $reserva = $modelo->obtenerReservaPorId($id);
+        require 'vendor/autoload.php';
 
-        if (!$reserva) {
-            echo json_encode(['success' => false, 'message' => 'Reserva no encontrada']);
-            exit;
-        }
+        $mail = new PHPMailer\PHPMailer\PHPMailer(true);
 
         try {
-            // Instanciar usando FQCN (sin usar 'use' aquí)
-            $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
-
+            // Config SMTP
             $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
-            $mail->SMTPAuth   = true;
-            $mail->Username   = 'tu_correo@gmail.com';       // cambiar
-            $mail->Password   = 'tu_app_password';           // cambiar (app password)
-            $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            $mail->Host = "smtp.gmail.com";
+            $mail->SMTPAuth = true;
+            $mail->Username = "theandriwrex@gmail.com";
+            $mail->Password = "vrpr mmyu prrp hrva";
+            $mail->SMTPSecure = "tls";
+            $mail->Port = 587;
 
-            $mail->setFrom('tu_correo@gmail.com', 'Hotel Spyce');
-            $mail->addAddress($reserva['correo'] ?? $email, $reserva['nombre_completo'] ?? '');
+            // Dirección del hotel
+            $mail->setFrom("TU_CORREO@gmail.com", "Hotel Spyce");
+
+            // 📌 Destino → correo del usuario logueado
+            $mail->addAddress($_SESSION['correo'], $_SESSION['nombre']);
+
             $mail->isHTML(true);
-            $mail->Subject = "Confirmación de Reserva #{$reserva['id_reserva']}";
-            $mail->Body    = "
-                <h2>Confirmación de Reserva</h2>
-                <p>Hola <b>" . htmlspecialchars($reserva['nombre_completo']) . "</b>,</p>
-                <p>Tu reserva <b>#" . $reserva['id_reserva'] . "</b> para la habitación <b>" . ($reserva['numero_habitacion'] ?? 'N/A') . "</b> 
-                desde <b>" . $reserva['fecha_ingreso'] . "</b> hasta <b>" . $reserva['fecha_salida'] . "</b> ha sido confirmada.</p>
-                <p>Gracias por elegir Hotel Spyce.</p>
-            ";
+            $mail->Subject = "Confirmación de Reserva";
+            $mail->Body = "Hola " . $_SESSION['nombre'] . ", tu reserva #" . $id_reserva . " fue confirmada.";
 
             $mail->send();
+
             echo json_encode(['success' => true]);
-        } catch (\PHPMailer\PHPMailer\Exception $e) {
-            echo json_encode(['success' => false, 'message' => $mail->ErrorInfo ?: $e->getMessage()]);
+
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'error' => $mail->ErrorInfo]);
         }
-        exit;
     }
 
 
